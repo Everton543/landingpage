@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Information Form</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        width: 300px;
+        margin: auto;
+    }
+    input {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    button {
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        background-color: #008CBA;
+        color: white;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+    <form id="infoForm">
+        <label for="firstName">First Name: </label>
+        <input type="text" name="firstName" id="firstName" required>
+        
+        <label for="lastName">Last Name: </label>
+        <input type="text" name="lastName" id="lastName" required>
+        
+        <label for="email">Email: </label>
+        <input type="email" name="email" id="email" required>
+        
+        <label for="favoriteColor">Favorite Color: </label>
+        <input type="text" name="favoriteColor" id="favoriteColor" required>
+        
+        <label for="birthday">Birthday: </label>
+        <input type="date" name="birthday" id="birthday" value="2000-01-01">
+        
+        <button type="submit">Submit</button>
+    </form>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        document.getElementById('infoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            var contact = {};
+            formData.forEach(function(value, key){
+                contact[key] = value;
+            });
+            var contactInfo = JSON.stringify(contact);
+            $.ajax({
+                url: 'http://localhost:3000/saveContacts',
+                type: 'POST',
+                contentType: 'application/json',
+                data: contactInfo,
+                success: function(data){
+                    console.log('Success:', data);
+                },
+                error: function(error){
+                    console.error('Error:', error);
+                }
+            });
+        });
+    </script>    
+</body>
+</html>

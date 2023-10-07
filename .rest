@@ -22,13 +22,13 @@ GET http://localhost:3000/contact/650d9ce60a7a6300e43ccd23 HTTP/1.1
 PUT http://localhost:3000/contact/650d9ce60a7a6300e43ccd23 HTTP/1.1
 
 ### Update Contact 1
-PUT https://cse-341-ixfd.onrender.com/contact/650d9ce60a7a6300e43ccd23 HTTP/1.1
+PUT https://cse-341-ixfd.onrender.com/contact/6518c34114955952ee3405ed HTTP/1.1
 
 ### Delete Contact 1
-DELETE http://localhost:3000/deleteContact/650d9ce60a7a6300e43ccd23 HTTP/1.1
+DELETE http://localhost:3000/deleteContact/650d9ce60a7a6300e43ccd24 HTTP/1.1
 
 ### Delete Contact 1
-DELETE https://cse-341-ixfd.onrender.com/deleteContact/650d9ce60a7a6300e43ccd23 HTTP/1.1
+DELETE https://cse-341-ixfd.onrender.com/deleteContact/650d9ce60a7a6300e43ccd25 HTTP/1.1
 
 ### Contact 2
 GET http://localhost:3000/contact/650d9ce60a7a6300e43ccd24 HTTP/1.1
