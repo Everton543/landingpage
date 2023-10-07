@@ -26,7 +26,14 @@ const getContactById = async (req, res, next) => {
 };
 
 const saveContact = async (req, res, next) => {
-    const newContact = req.body;
+    // const newContact = req.body;
+    const newContact = {
+        "firstName": "New Contact Name",
+        "lastName": "New Contact last name",
+        "email": "thisisfake@gmail.com",
+        "favoriteColor": "Blue",
+        "birthday": "16/10/90"
+    };
     const result = await mongodb.getDb().db().collection('contacts').insertOne(newContact);
     res.status(201).json({ id: result.insertedId });
 };
@@ -39,7 +46,13 @@ const displaySaveContactForm = (req, res, next) => {
 const updateContact = async (req, res, next) => {
         const id = req.params.id;
         const objectId = new ObjectId(id);
-        const updatedContact = req.body;
+        const updatedContact = {
+            "firstName": "Update Contact Name",
+            "lastName": "Update Contact last name",
+            "email": "updatethisisfake@gmail.com",
+            "favoriteColor": "Dark Blue",
+            "birthday": "16/10/93"
+        };
         await mongodb.getDb().db().collection('contacts').updateOne({ _id: objectId }, { $set: updatedContact });
         res.status(204).send();
 };
