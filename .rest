@@ -1,52 +1,13 @@
 GET http://localhost:3000 HTTP/1.1
 
 ###
-GET https://cse-341-ixfd.onrender.com HTTP/1.1
+GET http://localhost:3000/ownerInfo/TOKEN HTTP/1.1
 
 ###
-GET http://localhost:3000/contacts HTTP/1.1
+GET http://localhost:3000/opinions HTTP/1.1
 
 ###
-POST http://localhost:3000/saveContacts HTTP/1.1
+GET http://localhost:3000/products HTTP/1.1
 
 ###
-POST https://cse-341-ixfd.onrender.com/saveContacts HTTP/1.1
-
-###
-GET https://cse-341-ixfd.onrender.com/contacts HTTP/1.1
-
-### Contact 1
-GET http://localhost:3000/contact/650d9ce60a7a6300e43ccd23 HTTP/1.1
-
-### Update Contact 1
-PUT http://localhost:3000/contact/650d9ce60a7a6300e43ccd23 HTTP/1.1
-
-### Update Contact 1
-PUT https://cse-341-ixfd.onrender.com/contact/6518c34114955952ee3405ed HTTP/1.1
-
-### Delete Contact 1
-DELETE http://localhost:3000/deleteContact/650d9ce60a7a6300e43ccd24 HTTP/1.1
-
-### Delete Contact 1
-DELETE https://cse-341-ixfd.onrender.com/deleteContact/650d9ce60a7a6300e43ccd25 HTTP/1.1
-
-### Contact 2
-GET http://localhost:3000/contact/650d9ce60a7a6300e43ccd24 HTTP/1.1
-
-### Update Contact 2
-PUT http://localhost:3000/contact/650d9ce60a7a6300e43ccd24 HTTP/1.1
-
-### Contact 3
-GET http://localhost:3000/contact/650d9ce60a7a6300e43ccd25 HTTP/1.1
-
-### Update Contact 3
-PUT http://localhost:3000/contact/650d9ce60a7a6300e43ccd25 HTTP/1.1
-
-### Contact 1 at render
-GET https://cse-341-ixfd.onrender.com/contact/650d9ce60a7a6300e43ccd23 HTTP/1.1
-
-### Contact 2 at render
-GET https://cse-341-ixfd.onrender.com/contact/650d9ce60a7a6300e43ccd24 HTTP/1.1
-
-### Contact 3 at render
-GET https://cse-341-ixfd.onrender.com/contact/650d9ce60a7a6300e43ccd25 HTTP/1.1
+GET http://localhost:3000/productsSold HTTP/1.1
