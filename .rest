@@ -1,5 +1,3 @@
-GET http://localhost:3000 HTTP/1.1
-
 ###
 GET http://localhost:3000/ownerInfo/TOKEN HTTP/1.1
 
@@ -7,7 +5,15 @@ GET http://localhost:3000/ownerInfo/TOKEN HTTP/1.1
 GET http://localhost:3000/opinions HTTP/1.1
 
 ###
+GET https://cse-341-landingpage.onrender.com/opinions HTTP/1.1
+
+###
 GET http://localhost:3000/products HTTP/1.1
+###
+GET https://cse-341-landingpage.onrender.com/products HTTP/1.1
 
 ###
 GET http://localhost:3000/productsSold HTTP/1.1
+
+###
+GET https://cse-341-landingpage.onrender.com/productsSold HTTP/1.1
