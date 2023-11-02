@@ -184,4 +184,62 @@ const putNewProduct = async (req, res, next) => {
     return res.status(201).json({ id: result.insertedId });
 };
 
-module.exports = { getOpinions, getOwnerInfo, getAllProducts, getAllProductsSold, getOpinionsById, getProductById, getProductSoldById, putNewOpinion, putNewProduct};
+const putNewProductSold = async (req, res, next) => {
+    const newProductSold = req.body;
+    newProductSold.hasOpinion = false;
+    const token = newProductSold.token;
+    if (!token) {
+        return res.status(400).json({ error: "Token is missing in the request body" });
+    }
+    
+    if (token != process.env.OWNER_TOKEN) {
+        return res.status(400).json({ error: "Token is invalid" });
+    }
+
+    delete newProductSold.token;
+
+    if(!validate.validateProductSoldInfo(newProductSold)){
+        return res.status(400).json({ error: "The information is invalid." });
+    }
+    
+    const result = await mongodb.getDb().db().collection('productsSold').insertOne(newProductSold);
+    return res.status(201).json({ id: result.insertedId });
+};
+
+const deleteOpinion = async (req, res, next) => {
+    const opinion = req.body;
+    const objectId = new ObjectId(opinion.opinionId);
+    const result = await mongodb.getDb().db().collection('opinions').deleteOne({ _id: objectId });
+    
+    if(result.deletedCount > 0){
+        return res.status(201).json({'success': true});
+    }
+    
+    return res.status(201).json({'success': false});
+};
+
+const deleteProduct = async (req, res, next) => {
+    const product = req.body;
+    const objectId = new ObjectId(product.productId);
+    const result = await mongodb.getDb().db().collection('products').deleteOne({ _id: objectId });
+
+    if(result.deletedCount > 0){
+        return res.status(201).json({'success': true});
+    }
+    
+    return res.status(201).json({'success': false});
+};
+
+const deleteProductSold = async (req, res, next) => {
+    const productSold = req.body;
+    const objectId = new ObjectId(productSold.productSoldId);
+    const result = await mongodb.getDb().db().collection('productsSold').deleteOne({ _id: objectId });
+    
+    if(result.deletedCount > 0){
+        return res.status(201).json({'success': true});
+    }
+    
+    return res.status(201).json({'success': false});
+};
+
+module.exports = { getOpinions, getOwnerInfo, getAllProducts, getAllProductsSold, getOpinionsById, getProductById, getProductSoldById, putNewOpinion, putNewProduct, putNewProductSold, deleteOpinion, deleteProduct, deleteProductSold};

@@ -13,7 +13,12 @@ routes.get('/productsSold', baseController.getAllProductsSold);
 routes.get('/getProductSold/:id', baseController.getProductSoldById);
 
 routes.post('/sendOpinion', upload.none(), baseController.putNewOpinion);
-routes.post('/sendProduct', upload.none(), baseController.putNewProduct);
+routes.put('/sendProduct', upload.none(), baseController.putNewProduct);
+routes.put('/sendProductSoldInformation', upload.none(), baseController.putNewProductSold);
+
+routes.delete('/deleteOpinion', upload.none(), baseController.deleteOpinion)
+routes.delete('/deleteProduct', upload.none(), baseController.deleteProduct)
+routes.delete('/deleteProductSold', upload.none(), baseController.deleteProductSold)
 
 
 module.exports = routes;
