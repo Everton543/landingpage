@@ -220,7 +220,7 @@ const deleteOpinion = async (req, res, next) => {
 
     const opinionDeleted = await mongodb.getDb().db().collection('opinions').findOne({ _id: objectId });
     if(!opinionDeleted || !opinionDeleted.productSoldId) {
-        return res.status(400).json({'success': false, error: "The opinion does not exist" });
+        return res.status(400).json({success: false, error: "The opinion does not exist" });
     }
 
     const productSoldId = new ObjectId(opinionDeleted.productSoldId);
@@ -228,10 +228,10 @@ const deleteOpinion = async (req, res, next) => {
 
     const result = await mongodb.getDb().db().collection('opinions').deleteOne({ _id: objectId });
     if(result.deletedCount > 0){
-        return res.status(201).json({'success': true});
+        return res.status(201).json({success: true});
     }
     
-    return res.status(400).json({'success': false, error: "The opinion does not exist" });
+    return res.status(400).json({success: false, error: "The opinion does not exist" });
 };
 
 const deleteProduct = async (req, res, next) => {
@@ -240,10 +240,10 @@ const deleteProduct = async (req, res, next) => {
     const result = await mongodb.getDb().db().collection('products').deleteOne({ _id: objectId });
 
     if(result.deletedCount > 0){
-        return res.status(201).json({'success': true});
+        return res.status(201).json({success: true});
     }
     
-    return res.status(400).json({'success': false, error: "The product does not exist"});
+    return res.status(400).json({success: false, error: "The product does not exist"});
 };
 
 const deleteProductSold = async (req, res, next) => {
@@ -253,10 +253,43 @@ const deleteProductSold = async (req, res, next) => {
     const result = await mongodb.getDb().db().collection('productsSold').deleteOne({ _id: objectId });
     
     if(result.deletedCount > 0){
-        return res.status(201).json({'success': true});
+        return res.status(201).json({success: true});
     }
     
-    return res.status(400).json({'success': false, error: "The product sold does not exist"});
+    return res.status(400).json({success: false, error: "The product sold does not exist"});
 };
 
-module.exports = { getOpinions, getOwnerInfo, getAllProducts, getAllProductsSold, getOpinionsById, getProductById, getProductSoldById, putNewOpinion, putNewProduct, putNewProductSold, deleteOpinion, deleteProduct, deleteProductSold};
+const updateProduct = async (req, res, next) => {
+    if (!req.body || Object.keys(req.body).length === 0) {
+        return res.status(400).json({success: false, error: "Request body is empty" });
+    }
+    const product = req.body;
+    if(!validate.validateProductInfo(product)){
+        return res.status(400).json({success: false, error: "The product is invalid." });
+    }
+    product.name = product.name.toUpperCase();
+    const token = product.token;
+    if (!token) {
+        return res.status(400).json({success: false, error: "Token is missing in the request body" });
+    }
+    
+    if (token != process.env.OWNER_TOKEN) {
+        return res.status(400).json({success: false, error: "Token is invalid" });
+    }
+
+    if(!product || !product.productId) {
+        return res.status(400).json({success: false, error: "There is no productId" });
+    }
+
+    delete product.token;
+    const objectId = new ObjectId(product.productId);
+
+    const result = await mongodb.getDb().db().collection('products').updateOne({ _id: objectId }, { $set: { name: product.name, detail: product.detail} });
+    if(result.modifiedCount == 0){
+        return res.status(400).json({success: false, error: "Product was not updated" });
+    }
+
+    return res.status(200).json({success: true, message: "Product updated successfully" });
+}
+
+module.exports = { getOpinions, getOwnerInfo, getAllProducts, getAllProductsSold, getOpinionsById, getProductById, getProductSoldById, putNewOpinion, putNewProduct, putNewProductSold, deleteOpinion, deleteProduct, deleteProductSold, updateProduct};
