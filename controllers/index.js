@@ -224,7 +224,7 @@ const deleteOpinion = async (req, res, next) => {
     }
 
     const productSoldId = new ObjectId(opinionDeleted.productSoldId);
-    await mongodb.getDb().db().collection('productsSold').updateOne({ _id: productSoldId }, { $set: { hasOpinion: false } });
+    mongodb.getDb().db().collection('productsSold').updateOne({ _id: productSoldId }, { $set: { hasOpinion: false } });
 
     const result = await mongodb.getDb().db().collection('opinions').deleteOne({ _id: objectId });
     if(result.deletedCount > 0){
@@ -243,19 +243,20 @@ const deleteProduct = async (req, res, next) => {
         return res.status(201).json({'success': true});
     }
     
-    return res.status(201).json({'success': false});
+    return res.status(400).json({'success': false, error: "The product does not exist"});
 };
 
 const deleteProductSold = async (req, res, next) => {
     const productSold = req.body;
     const objectId = new ObjectId(productSold.productSoldId);
+    mongodb.getDb().db().collection('opinions').deleteOne({ productSoldId: productSold.productSoldId });
     const result = await mongodb.getDb().db().collection('productsSold').deleteOne({ _id: objectId });
     
     if(result.deletedCount > 0){
         return res.status(201).json({'success': true});
     }
     
-    return res.status(201).json({'success': false});
+    return res.status(400).json({'success': false, error: "The product sold does not exist"});
 };
 
 module.exports = { getOpinions, getOwnerInfo, getAllProducts, getAllProductsSold, getOpinionsById, getProductById, getProductSoldById, putNewOpinion, putNewProduct, putNewProductSold, deleteOpinion, deleteProduct, deleteProductSold};
