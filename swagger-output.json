@@ -267,13 +267,13 @@
                 "name": {
                   "example": "any"
                 },
+                "detail": {
+                  "example": "any"
+                },
                 "token": {
                   "example": "any"
                 },
-                "req": {
-                  "example": "any"
-                },
-                "detail": {
+                "productId": {
                   "example": "any"
                 }
               }
@@ -306,7 +306,7 @@
                 "token": {
                   "example": "any"
                 },
-                "req": {
+                "productSoldId": {
                   "example": "any"
                 },
                 "productId": {
