@@ -162,24 +162,6 @@
                 "rating": {
                   "example": "any"
                 },
-                "created_at": {
-                  "example": "any"
-                },
-                "updated_at": {
-                  "example": "any"
-                },
-                "edited": {
-                  "example": "any"
-                },
-                "priority": {
-                  "example": "any"
-                },
-                "display": {
-                  "example": "any"
-                },
-                "priorityPosition": {
-                  "example": "any"
-                },
                 "message": {
                   "example": "any"
                 }
@@ -216,6 +198,9 @@
                 "name": {
                   "example": "any"
                 },
+                "detail": {
+                  "example": "any"
+                },
                 "token": {
                   "example": "any"
                 }
@@ -243,7 +228,13 @@
             "schema": {
               "type": "object",
               "properties": {
-                "hasOpinion": {
+                "name": {
+                  "example": "any"
+                },
+                "productId": {
+                  "example": "any"
+                },
+                "dateSold": {
                   "example": "any"
                 },
                 "token": {
