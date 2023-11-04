@@ -17,6 +17,8 @@ routes.put('/sendProduct', upload.none(), baseController.putNewProduct);
 routes.put('/sendProductSoldInformation', upload.none(), baseController.putNewProductSold);
 
 routes.post('/updateProduct', baseController.updateProduct);
+routes.post('/updateProductSold', baseController.updateProductSold);
+routes.post('/updateOwnerInfo', baseController.updateOwnerInfo);
 
 routes.delete('/deleteOpinion', upload.none(), baseController.deleteOpinion)
 routes.delete('/deleteProduct', upload.none(), baseController.deleteProduct)

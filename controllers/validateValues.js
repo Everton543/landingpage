@@ -37,5 +37,37 @@ const validateProductSoldInfo = (productSold) => {
 
   return true;
 }
+
+const validateOwnerInfo = (info) => {
+  if (!info || typeof info !== 'object') {
+    return false;
+  }
+
+  if (!Object.prototype.hasOwnProperty.call(info, 'name') || 
+  !Object.prototype.hasOwnProperty.call(info, 'searchMode') ||
+  !Object.prototype.hasOwnProperty.call(info, 'displayAllOpinions')
+  ) {
+      return false;
+  }
+
+  if (typeof info.displayAllOpinions !== 'boolean') {
+    return false;
+  }
+
+  if (info.name === null || info.name === '' ||
+    info.searchMode === null || info.searchMode === '' ||
+    info.displayAllOpinions === null || info.displayAllOpinions === ''
+  ) {
+    return false;
+  }
+
+  switch(info.searchMode){
+    case 'byDate':
+    case 'priority':
+      return true;
+    default:
+      return false;
+  }
+}
   
-module.exports = { validateProductInfo, validateProductSoldInfo};
+module.exports = { validateProductInfo, validateProductSoldInfo, validateOwnerInfo};

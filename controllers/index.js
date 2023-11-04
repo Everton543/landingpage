@@ -61,7 +61,7 @@ const getOwnerInfo = async (req, res, next) => {
     const result = await mongodb.getDb()
         .db()
         .collection('owner_info')
-        .findOne({ token: token }, { projection: { name: 1, searchMode: 1, displayAllOpinions: 1, usePriority: 1 } });
+        .findOne({ token: token }, { projection: { name: 1, searchMode: 1, displayAllOpinions: 1} });
     if (result) {
         res.setHeader('Content-Type', 'application/json');
         res.status(200).json(result);
@@ -209,6 +209,12 @@ const putNewProductSold = async (req, res, next) => {
     if(!validate.validateProductSoldInfo(newProductSold)){
         return res.status(400).json({ error: "The information is invalid." });
     }
+
+    const productId = new ObjectId(productSold.productId);
+    const product = await mongodb.getDb().db().collection('products').findOne({ _id: productId });
+    if (product == null) {
+        return res.status(400).json({success: false, error: "Product does not exists" });
+    }
     
     const result = await mongodb.getDb().db().collection('productsSold').insertOne(newProductSold);
     return res.status(201).json({ id: result.insertedId });
@@ -292,4 +298,79 @@ const updateProduct = async (req, res, next) => {
     return res.status(200).json({success: true, message: "Product updated successfully" });
 }
 
-module.exports = { getOpinions, getOwnerInfo, getAllProducts, getAllProductsSold, getOpinionsById, getProductById, getProductSoldById, putNewOpinion, putNewProduct, putNewProductSold, deleteOpinion, deleteProduct, deleteProductSold, updateProduct};
+const updateProductSold = async (req, res, next) => {
+    if (!req.body || Object.keys(req.body).length === 0) {
+        return res.status(400).json({success: false, error: "Request body is empty" });
+    }
+    const productSold = req.body;
+    if(!validate.validateProductSoldInfo(productSold)){
+        return res.status(400).json({success: false, error: "The product sold is invalid." });
+    }
+    productSold.name = productSold.name.toUpperCase();
+    const token = productSold.token;
+    if (!token) {
+        return res.status(400).json({success: false, error: "Token is missing in the request body" });
+    }
+    
+    if (token != process.env.OWNER_TOKEN) {
+        return res.status(400).json({success: false, error: "Token is invalid" });
+    }
+
+    if(!productSold || !productSold.productSoldId) {
+        return res.status(400).json({success: false, error: "There is no productSoldId" });
+    }
+
+    delete productSold.token;
+    const productId = new ObjectId(productSold.productId);
+    const product = await mongodb.getDb().db().collection('products').findOne({ _id: productId });
+    if (product == null) {
+        return res.status(400).json({success: false, error: "Product does not exists" });
+    }
+    const objectId = new ObjectId(productSold.productSoldId);
+
+    const result = await mongodb.getDb().db().collection('productsSold').updateOne({ _id: objectId }, { $set: {
+            productId: productSold.productId,
+            dateSold: productSold.dateSold,
+            hasOpinion: productSold.hasOpinion,
+            name: productSold.name, 
+        } 
+    });
+    if(result.modifiedCount == 0){
+        return res.status(400).json({success: false, error: "Product sold was not updated" });
+    }
+
+    return res.status(200).json({success: true, message: "Product sold updated successfully" });
+}
+
+const updateOwnerInfo = async (req, res, next) => {
+    if (!req.body || Object.keys(req.body).length === 0) {
+        return res.status(400).json({success: false, error: "Request body is empty" });
+    }
+    const owner_info = req.body;
+    if(!validate.validateOwnerInfo(owner_info)){
+        return res.status(400).json({success: false, error: "The invalid information." });
+    }
+    const token = owner_info.token;
+    if (!token) {
+        return res.status(400).json({success: false, error: "Token is missing in the request body" });
+    }
+    
+    if (token != process.env.OWNER_TOKEN) {
+        return res.status(400).json({success: false, error: "Token is invalid" });
+    }
+
+    const result = await mongodb.getDb().db().collection('owner_info').updateOne({ token: token }, { $set: 
+        {
+             name: owner_info.name,
+             searchMode: owner_info.searchMode,
+             displayAllOpinions: owner_info.displayAllOpinions,
+        }
+     });
+    if(result.modifiedCount == 0){
+        return res.status(400).json({success: false, error: "Information was not updated" });
+    }
+
+    return res.status(200).json({success: true, message: "Information updated successfully" });
+}
+
+module.exports = { getOpinions, getOwnerInfo, getAllProducts, getAllProductsSold, getOpinionsById, getProductById, getProductSoldById, putNewOpinion, putNewProduct, putNewProductSold, deleteOpinion, deleteProduct, deleteProductSold, updateProduct, updateProductSold, updateOwnerInfo};
