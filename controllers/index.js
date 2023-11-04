@@ -120,10 +120,12 @@ const getProductSoldById = async (req, res, next) => {
 };
 
 const putNewOpinion = async (req, res, next) => {
+    if (!req.body || Object.keys(req.body).length === 0) {
+        return res.status(400).json({ error: "Request body is empty" });
+    }
     const newOpinion = req.body;
     const productSoldId = newOpinion.productSoldId;
     const objectId = new ObjectId(productSoldId);
-
     if (!productSoldId) {
         return res.status(400).json({ error: "Token is missing in the request body" });
     } else if(newOpinion.rating == null){
@@ -151,8 +153,12 @@ const putNewOpinion = async (req, res, next) => {
         newOpinion.updated_at = getCurrentDate();
         newOpinion.edited = true;
 
-        await mongodb.getDb().db().collection('opinions').updateOne({ productSoldId: productSoldId }, { $set: { message: newOpinion.message, edited: newOpinion.edited, updated_at: newOpinion.updated_at, rating:  newOpinion.rating} });
-        return res.status(200).json({ message: "Opinion updated successfully" });
+        const result = await mongodb.getDb().db().collection('opinions').updateOne({ productSoldId: productSoldId }, { $set: { message: newOpinion.message, edited: newOpinion.edited, updated_at: newOpinion.updated_at, rating:  newOpinion.rating} });
+        console.log(result);
+        if(result.modifiedCount == 0){
+            return res.status(200).json({success: false, message: "Opinion was not updated" });
+        }
+        return res.status(200).json({success: true, message: "Opinion updated successfully" });
     }
 };
 

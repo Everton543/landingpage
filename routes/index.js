@@ -12,8 +12,7 @@ routes.get('/getProduct/:id', baseController.getProductById);
 routes.get('/productsSold', baseController.getAllProductsSold);
 routes.get('/getProductSold/:id', baseController.getProductSoldById);
 
-routes.post('/sendOpinion', upload.none(), baseController.putNewOpinion);
-routes.post('/sendOpinionJson', baseController.putNewOpinion);
+routes.post('/sendOpinion',baseController.putNewOpinion);
 routes.put('/sendProduct', upload.none(), baseController.putNewProduct);
 routes.put('/sendProductSoldInformation', upload.none(), baseController.putNewProductSold);
 
