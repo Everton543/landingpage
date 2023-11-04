@@ -154,7 +154,6 @@ const putNewOpinion = async (req, res, next) => {
         newOpinion.edited = true;
 
         const result = await mongodb.getDb().db().collection('opinions').updateOne({ productSoldId: productSoldId }, { $set: { message: newOpinion.message, edited: newOpinion.edited, updated_at: newOpinion.updated_at, rating:  newOpinion.rating} });
-        console.log(result);
         if(result.modifiedCount == 0){
             return res.status(200).json({success: false, message: "Opinion was not updated" });
         }
@@ -163,6 +162,9 @@ const putNewOpinion = async (req, res, next) => {
 };
 
 const putNewProduct = async (req, res, next) => {
+    if (!req.body || Object.keys(req.body).length === 0) {
+        return res.status(400).json({ error: "Request body is empty" });
+    }
     const newProduct = req.body;
     newProduct.name = newProduct.name.toUpperCase();
     const token = newProduct.token;
@@ -215,13 +217,21 @@ const putNewProductSold = async (req, res, next) => {
 const deleteOpinion = async (req, res, next) => {
     const opinion = req.body;
     const objectId = new ObjectId(opinion.opinionId);
+
+    const opinionDeleted = await mongodb.getDb().db().collection('opinions').findOne({ _id: objectId });
+    if(!opinionDeleted || !opinionDeleted.productSoldId) {
+        return res.status(400).json({'success': false, error: "The opinion does not exist" });
+    }
+
+    const productSoldId = new ObjectId(opinionDeleted.productSoldId);
+    await mongodb.getDb().db().collection('productsSold').updateOne({ _id: productSoldId }, { $set: { hasOpinion: false } });
+
     const result = await mongodb.getDb().db().collection('opinions').deleteOne({ _id: objectId });
-    
     if(result.deletedCount > 0){
         return res.status(201).json({'success': true});
     }
     
-    return res.status(201).json({'success': false});
+    return res.status(400).json({'success': false, error: "The opinion does not exist" });
 };
 
 const deleteProduct = async (req, res, next) => {

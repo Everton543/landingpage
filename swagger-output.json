@@ -273,7 +273,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "req": {
+                "opinionId": {
                   "example": "any"
                 }
               }
@@ -283,6 +283,9 @@
         "responses": {
           "201": {
             "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -297,7 +300,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "req": {
+                "productId": {
                   "example": "any"
                 }
               }
@@ -321,7 +324,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "req": {
+                "productSoldId": {
                   "example": "any"
                 }
               }
