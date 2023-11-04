@@ -228,7 +228,7 @@ const deleteOpinion = async (req, res, next) => {
 
     const result = await mongodb.getDb().db().collection('opinions').deleteOne({ _id: objectId });
     if(result.deletedCount > 0){
-        return res.status(201).json({success: true});
+        return res.status(201).json({success: true, message: "Opinion deleted successfully"});
     }
     
     return res.status(400).json({success: false, error: "The opinion does not exist" });
@@ -240,7 +240,7 @@ const deleteProduct = async (req, res, next) => {
     const result = await mongodb.getDb().db().collection('products').deleteOne({ _id: objectId });
 
     if(result.deletedCount > 0){
-        return res.status(201).json({success: true});
+        return res.status(201).json({success: true, message: "Product deleted successfully"});
     }
     
     return res.status(400).json({success: false, error: "The product does not exist"});
@@ -253,7 +253,7 @@ const deleteProductSold = async (req, res, next) => {
     const result = await mongodb.getDb().db().collection('productsSold').deleteOne({ _id: objectId });
     
     if(result.deletedCount > 0){
-        return res.status(201).json({success: true});
+        return res.status(201).json({success: true, message: "Product sold deleted successfully"});
     }
     
     return res.status(400).json({success: false, error: "The product sold does not exist"});
