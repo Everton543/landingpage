@@ -91,7 +91,7 @@ const getOpinionsById = async (req, res, next) => {
         res.setHeader('Content-Type', 'application/json');
         res.status(200).json(result);
     } else {
-        res.status(404).send('Contact not found');
+        res.status(404).send('Opinion not found');
     }
 };
 
@@ -103,7 +103,7 @@ const getProductById = async (req, res, next) => {
         res.setHeader('Content-Type', 'application/json');
         res.status(200).json(result);
     } else {
-        res.status(404).send('Contact not found');
+        res.status(404).send('Product not found');
     }
 };
 
@@ -115,7 +115,7 @@ const getProductSoldById = async (req, res, next) => {
         res.setHeader('Content-Type', 'application/json');
         res.status(200).json(result);
     } else {
-        res.status(404).send('Contact not found');
+        res.status(404).send('Product sold not found');
     }
 };
 
